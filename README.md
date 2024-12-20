@@ -1,51 +1,52 @@
-## Info
+# Raylib Hot Reload in C
 
-Template for a game/game engine (GCC compiler / MSVC compiler)
+A proof of concept of using hot reload with the raylib library in C.
 
-* Sets up hot reload, so we can recompile the code while the application is running and automatically apply the changes without losing game state, very convenient for games and doesn't impact performance. 
-* Sets up raylib (which is an amazing library for developing games)so that the library is as easy to modify as possible, it's very easy to switch versions and you dont have to download it separately.
-* Sets up compiling scripts for msvc compiler (compiler from windows build tools / visual studio) and gcc compiler packaged along with raylib.
-* Easy to port, you need to replace win32_hot_reload with linux calls, not a lot of code to replace there.
+## Getting Started
 
-## How to run:
+1. **Clone the Repository:** Use the following command to download the project, including all necessary submodules:
 
-You need the gcc compiler (which is packaged with raylib installation) 
+    ```bash
+    git clone --recurse-submodules https://github.com/somenoe/raylib-hot-reload-c.git
+    ```
 
-1. Run build.bat
-2. Run run.bat 
-3. Done
+2. **Prepare Raylib:**  To set up the Raylib library, run:
 
-If you want to use msvc: just download Visual Studio Community 2019 and it should work just replace gcc calls with msvc calls in build.bat and run build.bat script, If you have any trouble with that checkout Casey Muratori's intro to Windows programming https://hero.handmade.network/episode/code/day001/ the compiler needs to be on your system path so that the system can find it.
+    ```bash
+    ./lib.bat
+    ```
 
-## Structure
+3. **Build the Project:** To compile the game code, run:
 
-* executable_main.c -> Loads the dynamic library(hotloaded_main.c) and calls Update from it in a loop. On every iteration checks if the dynamic library changed, if it did then it swaps the code 
-* hotloaded_main.c -> Gamecode(dynamic library), this is where you actually write the engine, game etc. It has Update function which is called on every frame, it also has Initialize function which is called on program start, HotReload function which is called when you recompile the program while its running and the code gets swapped
-* shared.h -> code shared between the executable and the dynamic library 
+    ```bash
+    ./build.bat
+    ```
 
-## How it works
+4. **Start the Game:** To launch the game, run:
 
-We have three entities here: 
-1. the executable
-2. the dynamic library of our thing
-3. the dynamic(shared) library of raylib
+    ```bash
+    ./run.bat
+    ```
 
-and a dynamic (or shared) library is a library that can by loaded at runtime of a program, so the basic idea of "hot loading" is to have the executable as the base, that holds everything together, this is the place that performs the program loop and all the data in the program belongs to the executable. The dynamic library holds the main code that's going to be executed and that code is loaded while the application is running using windows calls "LoadLibrary" and "GetProcAddress". Then the application is checking on every frame when was the dynamic library updated and if the value of that check diverges in any way from the value that we stored then we perform the code reload.
+5. **Update Game Code (Hot-Reload):** After making changes to your code, run the following to recompile and update the running game without needing to restart:
 
-The raylib shared library on the other hand is linked using a .lib/.a file at compile time, it's not loaded while the application is running. But it still has the properties of a dynamic or a "shared" library meaning that it has it's own internal state that it shares with the executable thanks to that we can easily use that library without losing any state when things get recompiled from our hotloaded dynamic library because we have all the function addresses through linking the .lib file. amazin
+    ```bash
+    ./update.bat
+    ```
 
-## How to speed up compilation
+## How it Works
 
-If you are compiling for a second time you can omit compiling both raylib and the executable_main.c, just comment out compiling in build.bat and gcc-build.bat/msvc-build.bat.
-Comment this out in gcc-build.bat
-``` 
-gcc ..\src\executable_main.c -o game.exe libraylib.dll.a -lgdi32 -lwinmm 
-```
-Comment this out in build.bat
-``` 
-call gcc-build-raylib.bat 
-```
+This system uses three key parts:
 
-## Source of the idea
+1. **Main Executable:** This is the main program that runs the game loop. It manages all game data.
+2. **Game Code Library:** This is where you write your game logic. It's a special library that can be updated while the game is running.
+3. **Raylib Library:** This is a library used to create the game. It is linked to the main program before the game starts.
 
-https://hero.handmade.network/episode/code/day021/
+The main program loads the Game Code Library while the game is running. It constantly checks if the Game Code Library has been updated. If an update is detected, the program loads the new library, allowing you to see your changes immediately without restarting. The Raylib Library remains connected to the main program, so it works seamlessly with the updated code.
+
+## Learn More
+
+* **Original Hot-Reload Template (Raylib 3.0):** [https://github.com/krzosa/raylib_hot_reload_template](https://github.com/krzosa/raylib_hot_reload_template)
+* **Inspiration for Hot-Reload:** [https://hero.handmade.network/episode/code/day021/](https://hero.handmade.network/episode/code/day021/)
+* **Git Submodules:** [https://gist.github.com/gitaarik/8735255](https://gist.github.com/gitaarik/8735255) (Explanation of Git submodules)
+* **Raylib:** [https://github.com/raysan5/raylib](https://github.com/raysan5/raylib) (Official Raylib library)
