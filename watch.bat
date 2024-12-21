@@ -4,35 +4,33 @@
 setlocal enabledelayedexpansion
 
 set "src=src"
-set "lastState=.\bin\watch.txt"
+set "lastState="
 
-REM Ensure state file exists
-if not exist %lastState% (
-    echo Initializing state file...
-    for /f "delims=" %%F in ('dir /s /b /a-d "%src%\*.*"') do (
-        echo %%F %%~zF %%~tF >> %lastState%
-    )
+REM Get initial state
+for /f "delims=" %%F in ('dir /s /b /a-d "%src%\*.*"') do (
+	set "lastState=!lastState!%%F %%~zF %%~tF$"
 )
 
 echo Watching for changes in %src%...
 
 :loop
-REM Wait for 2 seconds before checking again
-ping -n 3 127.0.0.1 > nul
+REM Wait for 1 seconds before checking again
+timeout /t 1 /nobreak > nul
+
+REM Clear current state
+set "currentState="
 
 REM Capture current state of files
 for /f "delims=" %%F in ('dir /s /b /a-d "%src%\*.*"') do (
-    echo %%F %%~zF %%~tF >> currentState.txt
+	set "currentState=!currentState!%%F %%~zF %%~tF$"
 )
 
 REM Compare states
-fc %lastState% currentState.txt > nul
-if errorlevel 1 (
-    echo Change detected! Running update.bat...
-    call update.bat
-    copy /y currentState.txt %lastState% > nul
+if not "!lastState!"=="!currentState!" (
+	echo %lastState%
+	echo [%TIME%] Change detected! Recompiling...
+	call update.bat
+	set "lastState=!currentState!"
 )
-
-del currentState.txt
 
 goto loop
