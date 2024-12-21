@@ -17,3 +17,5 @@ del lock.file
 @REM Compiling executable (.exe)
 gcc ..\src\main.c -o game.exe libraylibdll.a -lgdi32 -lwinmm
 echo --- Successfully compiled (.exe)
+
+cd ..
