@@ -8,11 +8,11 @@ void Initialize(GameState *gameState)
 	const int screenHeight = 450;
 	InitWindow(screenWidth, screenHeight, "raylib [core] example - window flags");
 
-	GameState.ballPosition = {GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
-	ballSpeed = {5.0f, 4.0f};
-	ballRadius = 20;
+	gameState->ballPosition = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
+	gameState->ballSpeed = (Vector2){5.0f, 4.0f};
+	gameState->ballRadius = 20;
 
-	framesCounter = 0;
+	gameState->framesCounter = 0;
 }
 
 // Called on every frame
@@ -52,8 +52,8 @@ void Update(GameState *gameState)
 
 		if (IsWindowState(FLAG_WINDOW_HIDDEN))
 		{
-			framesCounter++;
-			if (framesCounter >= 240)
+			gameState->framesCounter++;
+			if (gameState->framesCounter >= 240)
 				ClearWindowState(FLAG_WINDOW_HIDDEN); // Show window after 3 seconds
 		}
 
@@ -62,13 +62,13 @@ void Update(GameState *gameState)
 			if (!IsWindowState(FLAG_WINDOW_MINIMIZED))
 				MinimizeWindow();
 
-			framesCounter = 0;
+			gameState->framesCounter = 0;
 		}
 
 		if (IsWindowState(FLAG_WINDOW_MINIMIZED))
 		{
-			framesCounter++;
-			if (framesCounter >= 240)
+			gameState->framesCounter++;
+			if (gameState->framesCounter >= 240)
 				RestoreWindow(); // Restore window after 3 seconds
 		}
 
@@ -114,12 +114,12 @@ void Update(GameState *gameState)
 		}
 
 		// Bouncing ball logic
-		ballPosition.x += ballSpeed.x;
-		ballPosition.y += ballSpeed.y;
-		if ((ballPosition.x >= (GetScreenWidth() - ballRadius)) || (ballPosition.x <= ballRadius))
-			ballSpeed.x *= -1.0f;
-		if ((ballPosition.y >= (GetScreenHeight() - ballRadius)) || (ballPosition.y <= ballRadius))
-			ballSpeed.y *= -1.0f;
+		gameState->ballPosition.x += gameState->ballSpeed.x;
+		gameState->ballPosition.y += gameState->ballSpeed.y;
+		if ((gameState->ballPosition.x >= (GetScreenWidth() - gameState->ballRadius)) || (gameState->ballPosition.x <= gameState->ballRadius))
+			gameState->ballSpeed.x *= -1.0f;
+		if ((gameState->ballPosition.y >= (GetScreenHeight() - gameState->ballRadius)) || (gameState->ballPosition.y <= gameState->ballRadius))
+			gameState->ballSpeed.y *= -1.0f;
 		//-----------------------------------------------------
 
 		// Draw
