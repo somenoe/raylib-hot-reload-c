@@ -1,137 +1,138 @@
-#include "helpers/shared.h"
+/**
+ * @ref https://www.raylib.com/examples.html
+ */
 
-// Called at the the start of the program
+#include "shared.h"
+
 void Initialize(GameState *gameState)
 {
-
 	const int screenWidth = 800;
 	const int screenHeight = 450;
 	InitWindow(screenWidth, screenHeight, "raylib [core] example - window flags");
 
+	SetWindowState(FLAG_VSYNC_HINT);
+
 	gameState->ballPosition = (Vector2){GetScreenWidth() / 2.0f, GetScreenHeight() / 2.0f};
-	gameState->ballSpeed = (Vector2){5.0f, 4.0f};
+	gameState->ballSpeed = (Vector2){7.0f, 5.0f};
 	gameState->ballRadius = 20;
 
 	gameState->framesCounter = 0;
 }
 
-// Called on every frame
+void SetKeyboardShortcuts(GameState *gameState)
+{
+	if (IsKeyPressed(KEY_F))
+		ToggleFullscreen(); // modifies window size when scaling!
+
+	if (IsKeyPressed(KEY_R))
+	{
+		if (IsWindowState(FLAG_WINDOW_RESIZABLE))
+			ClearWindowState(FLAG_WINDOW_RESIZABLE);
+		else
+			SetWindowState(FLAG_WINDOW_RESIZABLE);
+	}
+
+	if (IsKeyPressed(KEY_D))
+	{
+		if (IsWindowState(FLAG_WINDOW_UNDECORATED))
+			ClearWindowState(FLAG_WINDOW_UNDECORATED);
+		else
+			SetWindowState(FLAG_WINDOW_UNDECORATED);
+	}
+
+	if (IsKeyPressed(KEY_H))
+	{
+		if (!IsWindowState(FLAG_WINDOW_HIDDEN))
+			SetWindowState(FLAG_WINDOW_HIDDEN);
+
+		gameState->framesCounter = 0;
+	}
+
+	if (IsWindowState(FLAG_WINDOW_HIDDEN))
+	{
+		gameState->framesCounter++;
+		if (gameState->framesCounter >= 240)
+			ClearWindowState(FLAG_WINDOW_HIDDEN); // Show window after 3 seconds
+	}
+
+	if (IsKeyPressed(KEY_N))
+	{
+		if (!IsWindowState(FLAG_WINDOW_MINIMIZED))
+			MinimizeWindow();
+
+		gameState->framesCounter = 0;
+	}
+
+	if (IsWindowState(FLAG_WINDOW_MINIMIZED))
+	{
+		gameState->framesCounter++;
+		if (gameState->framesCounter >= 240)
+			RestoreWindow(); // Restore window after 3 seconds
+	}
+
+	if (IsKeyPressed(KEY_M))
+	{
+		// NOTE: Requires FLAG_WINDOW_RESIZABLE enabled!
+		if (IsWindowState(FLAG_WINDOW_MAXIMIZED))
+			RestoreWindow();
+		else
+			MaximizeWindow();
+	}
+
+	if (IsKeyPressed(KEY_U))
+	{
+		if (IsWindowState(FLAG_WINDOW_UNFOCUSED))
+			ClearWindowState(FLAG_WINDOW_UNFOCUSED);
+		else
+			SetWindowState(FLAG_WINDOW_UNFOCUSED);
+	}
+
+	if (IsKeyPressed(KEY_T))
+	{
+		if (IsWindowState(FLAG_WINDOW_TOPMOST))
+			ClearWindowState(FLAG_WINDOW_TOPMOST);
+		else
+			SetWindowState(FLAG_WINDOW_TOPMOST);
+	}
+
+	if (IsKeyPressed(KEY_A))
+	{
+		if (IsWindowState(FLAG_WINDOW_ALWAYS_RUN))
+			ClearWindowState(FLAG_WINDOW_ALWAYS_RUN);
+		else
+			SetWindowState(FLAG_WINDOW_ALWAYS_RUN);
+	}
+
+	if (IsKeyPressed(KEY_V))
+	{
+		if (IsWindowState(FLAG_VSYNC_HINT))
+			ClearWindowState(FLAG_VSYNC_HINT);
+		else
+			SetWindowState(FLAG_VSYNC_HINT);
+	}
+}
+
 void Update(GameState *gameState)
 {
+	SetKeyboardShortcuts(gameState);
+
+	// Bouncing ball logic
+	gameState->ballPosition.x += gameState->ballSpeed.x;
+	gameState->ballPosition.y += gameState->ballSpeed.y;
+	if ((gameState->ballPosition.x >= (GetScreenWidth() - gameState->ballRadius)) || (gameState->ballPosition.x <= gameState->ballRadius))
+		gameState->ballSpeed.x *= -1.0f;
+	if ((gameState->ballPosition.y >= (GetScreenHeight() - gameState->ballRadius)) || (gameState->ballPosition.y <= gameState->ballRadius))
+		gameState->ballSpeed.y *= -1.0f;
 
 	BeginDrawing();
 	{
-		// Update
-		//-----------------------------------------------------
-		if (IsKeyPressed(KEY_F))
-			ToggleFullscreen(); // modifies window size when scaling!
-
-		if (IsKeyPressed(KEY_R))
-		{
-			if (IsWindowState(FLAG_WINDOW_RESIZABLE))
-				ClearWindowState(FLAG_WINDOW_RESIZABLE);
-			else
-				SetWindowState(FLAG_WINDOW_RESIZABLE);
-		}
-
-		if (IsKeyPressed(KEY_D))
-		{
-			if (IsWindowState(FLAG_WINDOW_UNDECORATED))
-				ClearWindowState(FLAG_WINDOW_UNDECORATED);
-			else
-				SetWindowState(FLAG_WINDOW_UNDECORATED);
-		}
-
-		if (IsKeyPressed(KEY_H))
-		{
-			if (!IsWindowState(FLAG_WINDOW_HIDDEN))
-				SetWindowState(FLAG_WINDOW_HIDDEN);
-
-			framesCounter = 0;
-		}
-
-		if (IsWindowState(FLAG_WINDOW_HIDDEN))
-		{
-			gameState->framesCounter++;
-			if (gameState->framesCounter >= 240)
-				ClearWindowState(FLAG_WINDOW_HIDDEN); // Show window after 3 seconds
-		}
-
-		if (IsKeyPressed(KEY_N))
-		{
-			if (!IsWindowState(FLAG_WINDOW_MINIMIZED))
-				MinimizeWindow();
-
-			gameState->framesCounter = 0;
-		}
-
-		if (IsWindowState(FLAG_WINDOW_MINIMIZED))
-		{
-			gameState->framesCounter++;
-			if (gameState->framesCounter >= 240)
-				RestoreWindow(); // Restore window after 3 seconds
-		}
-
-		if (IsKeyPressed(KEY_M))
-		{
-			// NOTE: Requires FLAG_WINDOW_RESIZABLE enabled!
-			if (IsWindowState(FLAG_WINDOW_MAXIMIZED))
-				RestoreWindow();
-			else
-				MaximizeWindow();
-		}
-
-		if (IsKeyPressed(KEY_U))
-		{
-			if (IsWindowState(FLAG_WINDOW_UNFOCUSED))
-				ClearWindowState(FLAG_WINDOW_UNFOCUSED);
-			else
-				SetWindowState(FLAG_WINDOW_UNFOCUSED);
-		}
-
-		if (IsKeyPressed(KEY_T))
-		{
-			if (IsWindowState(FLAG_WINDOW_TOPMOST))
-				ClearWindowState(FLAG_WINDOW_TOPMOST);
-			else
-				SetWindowState(FLAG_WINDOW_TOPMOST);
-		}
-
-		if (IsKeyPressed(KEY_A))
-		{
-			if (IsWindowState(FLAG_WINDOW_ALWAYS_RUN))
-				ClearWindowState(FLAG_WINDOW_ALWAYS_RUN);
-			else
-				SetWindowState(FLAG_WINDOW_ALWAYS_RUN);
-		}
-
-		if (IsKeyPressed(KEY_V))
-		{
-			if (IsWindowState(FLAG_VSYNC_HINT))
-				ClearWindowState(FLAG_VSYNC_HINT);
-			else
-				SetWindowState(FLAG_VSYNC_HINT);
-		}
-
-		// Bouncing ball logic
-		gameState->ballPosition.x += gameState->ballSpeed.x;
-		gameState->ballPosition.y += gameState->ballSpeed.y;
-		if ((gameState->ballPosition.x >= (GetScreenWidth() - gameState->ballRadius)) || (gameState->ballPosition.x <= gameState->ballRadius))
-			gameState->ballSpeed.x *= -1.0f;
-		if ((gameState->ballPosition.y >= (GetScreenHeight() - gameState->ballRadius)) || (gameState->ballPosition.y <= gameState->ballRadius))
-			gameState->ballSpeed.y *= -1.0f;
-		//-----------------------------------------------------
-
-		// Draw
-		//-----------------------------------------------------
-		BeginDrawing();
 
 		if (IsWindowState(FLAG_WINDOW_TRANSPARENT))
 			ClearBackground(BLANK);
 		else
 			ClearBackground(RAYWHITE);
 
-		DrawCircleV(ballPosition, ballRadius, MAROON);
+		DrawCircleV(gameState->ballPosition, gameState->ballRadius, MAROON);
 		DrawRectangleLinesEx((Rectangle){0, 0, (float)GetScreenWidth(), (float)GetScreenHeight()}, 4, RAYWHITE);
 
 		DrawCircleV(GetMousePosition(), 10, DARKBLUE);
@@ -196,21 +197,16 @@ void Update(GameState *gameState)
 			DrawText("FLAG_MSAA_4X_HINT: on", 10, 360, 10, LIME);
 		else
 			DrawText("FLAG_MSAA_4X_HINT: off", 10, 360, 10, MAROON);
-
-		EndDrawing();
-		//-----------------------------------------------------
 	}
 	EndDrawing();
 }
 
-// Called when you recompile the program while its running
 void HotReload(GameState *gameState)
 {
-	TraceLog(LOG_INFO, "HOTRELOAD");
+	TraceLog(LOG_INFO, "RELOADED");
 }
 
-// Called before the dynamic libraries get swapped
 void HotUnload(GameState *gameState)
 {
-	TraceLog(LOG_INFO, "HOTUNLOAD");
+	TraceLog(LOG_INFO, "UNLOADED");
 }

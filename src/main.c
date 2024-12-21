@@ -1,4 +1,4 @@
-#include "helpers/shared.h"
+#include "shared.h"
 #include "helpers/hot_reload.c"
 
 #define PATH_SIZE 2048
