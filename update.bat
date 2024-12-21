@@ -9,3 +9,5 @@ gcc ..\src\game.c -o game_code.dll -shared libraylibdll.a -lwinmm -lopengl32 -lg
 del lock.file
 
 echo --- Successfully compiled (.dll)
+
+cd ..
