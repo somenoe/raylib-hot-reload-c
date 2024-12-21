@@ -1,28 +1,31 @@
 # Raylib Hot Reload in C
 
-A proof of concept of using hot reload with the raylib library in C.
+A proof of concept of using hot reload with the Raylib library in C.
 
 ## Getting Started
 
-1. **Clone the Repository:** Use the following command to download the project, including all necessary submodules:
+1. **Clone the Repository:**
+   Clone the repository with submodules:
 
-    ```bash
-    git clone --recurse-submodules https://github.com/somenoe/raylib-hot-reload-c.git
-    ```
+   ```bash
+   git clone --recurse-submodules https://github.com/somenoe/raylib-hot-reload-c.git
+   ```
 
-2. **Prepare Raylib:**  To set up the Raylib library, run:
+2. **Prepare Raylib:**
+   Run the library setup script:
 
-    ```bash
-    ./lib.bat
-    ```
+   ```bash
+   ./lib.bat
+   ```
 
-3. **Run the development script:** To build and run the game, use:
+3. **Run the Development Script:**
+   Build and run the game with hot reloading:
 
-    ```bash
-    ./dev.bat
-    ```
+   ```bash
+   ./dev.bat
+   ```
 
-## How it Works
+## How Hot Reloading Works
 
 This system uses three key parts:
 
@@ -32,35 +35,35 @@ This system uses three key parts:
 
 The main program loads the Game Code Library while the game is running. It constantly checks if the Game Code Library has been updated. If an update is detected, the program loads the new library, allowing you to see your changes immediately without restarting. The Raylib Library remains connected to the main program, so it works seamlessly with the updated code.
 
-## Optional scripts
+## Optional Scripts
 
-- **Build the Project:** To compile the game code, run:
+- **Build:** Compile the game code:
 
-    ```bash
-    ./build.bat
-    ```
+  ```bash
+  ./build.bat
+  ```
 
-- **Start the Game:** To launch the game, run:
+- **Run:** Launch the game:
 
-    ```bash
-    ./run.bat
-    ```
+  ```bash
+  ./run.bat
+  ```
 
-- **Update Game Code (Hot-Reload):** After making changes to your code, run the following to recompile and update the running game without needing to restart:
+- **Update:** Recompile and update the running game (hot-reload):
 
-    ```bash
-    ./update.bat
-    ```
+  ```bash
+  ./update.bat
+  ```
 
-- **Watch Files:** To automatically run `./update.bat` when source files change, run:
+- **Watch:** Automatically update the game when source files change:
 
-    ```bash
-    ./watch.bat
-    ```
+  ```bash
+  ./watch.bat
+  ```
 
 ## Learn More
 
-- **Original Hot-Reload Template (Raylib 3.0):** [https://github.com/krzosa/raylib_hot_reload_template](https://github.com/krzosa/raylib_hot_reload_template)
-- **Inspiration for Hot-Reload:** [https://hero.handmade.network/episode/code/day021/](https://hero.handmade.network/episode/code/day021/)
-- **Git Submodules:** [https://gist.github.com/gitaarik/8735255](https://gist.github.com/gitaarik/8735255) (Explanation of Git submodules)
-- **Raylib:** [https://github.com/raysan5/raylib](https://github.com/raysan5/raylib) (Official Raylib library)
+- **Original Hot-Reload Template:** [https://github.com/krzosa/raylib_hot_reload_template](https://github.com/krzosa/raylib_hot_reload_template)
+- **Hot-Reloading Inspiration:** [https://hero.handmade.network/episode/code/day021/](https://hero.handmade.network/episode/code/day021/)
+- **Git Submodules Explained:** [https://gist.github.com/gitaarik/8735255](https://gist.github.com/gitaarik/8735255)
+- **Raylib Library:** [https://github.com/raysan5/raylib](https://github.com/raysan5/raylib)
