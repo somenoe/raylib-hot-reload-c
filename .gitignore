@@ -10,3 +10,5 @@
 *.o
 
 bin
+.aider*
+.env
