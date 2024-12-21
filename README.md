@@ -34,6 +34,12 @@ A proof of concept of using hot reload with the raylib library in C.
     ./update.bat
     ```
 
+6. **Watch Files:** To automatically run `./update.bat` when source files change, run:
+
+    ```bash
+    ./watch.bat
+    ```
+
 ## How it Works
 
 This system uses three key parts:
