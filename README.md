@@ -16,28 +16,10 @@ A proof of concept of using hot reload with the raylib library in C.
     ./lib.bat
     ```
 
-3. **Build the Project:** To compile the game code, run:
+3. **Run the development script:** To build and run the game, use:
 
     ```bash
-    ./build.bat
-    ```
-
-4. **Start the Game:** To launch the game, run:
-
-    ```bash
-    ./run.bat
-    ```
-
-5. **Update Game Code (Hot-Reload):** After making changes to your code, run the following to recompile and update the running game without needing to restart:
-
-    ```bash
-    ./update.bat
-    ```
-
-6. **Watch Files:** To automatically run `./update.bat` when source files change, run:
-
-    ```bash
-    ./watch.bat
+    ./dev.bat
     ```
 
 ## How it Works
@@ -50,9 +32,35 @@ This system uses three key parts:
 
 The main program loads the Game Code Library while the game is running. It constantly checks if the Game Code Library has been updated. If an update is detected, the program loads the new library, allowing you to see your changes immediately without restarting. The Raylib Library remains connected to the main program, so it works seamlessly with the updated code.
 
+## Optional scripts
+
+- **Build the Project:** To compile the game code, run:
+
+    ```bash
+    ./build.bat
+    ```
+
+- **Start the Game:** To launch the game, run:
+
+    ```bash
+    ./run.bat
+    ```
+
+- **Update Game Code (Hot-Reload):** After making changes to your code, run the following to recompile and update the running game without needing to restart:
+
+    ```bash
+    ./update.bat
+    ```
+
+- **Watch Files:** To automatically run `./update.bat` when source files change, run:
+
+    ```bash
+    ./watch.bat
+    ```
+
 ## Learn More
 
-* **Original Hot-Reload Template (Raylib 3.0):** [https://github.com/krzosa/raylib_hot_reload_template](https://github.com/krzosa/raylib_hot_reload_template)
-* **Inspiration for Hot-Reload:** [https://hero.handmade.network/episode/code/day021/](https://hero.handmade.network/episode/code/day021/)
-* **Git Submodules:** [https://gist.github.com/gitaarik/8735255](https://gist.github.com/gitaarik/8735255) (Explanation of Git submodules)
-* **Raylib:** [https://github.com/raysan5/raylib](https://github.com/raysan5/raylib) (Official Raylib library)
+- **Original Hot-Reload Template (Raylib 3.0):** [https://github.com/krzosa/raylib_hot_reload_template](https://github.com/krzosa/raylib_hot_reload_template)
+- **Inspiration for Hot-Reload:** [https://hero.handmade.network/episode/code/day021/](https://hero.handmade.network/episode/code/day021/)
+- **Git Submodules:** [https://gist.github.com/gitaarik/8735255](https://gist.github.com/gitaarik/8735255) (Explanation of Git submodules)
+- **Raylib:** [https://github.com/raysan5/raylib](https://github.com/raysan5/raylib) (Official Raylib library)
